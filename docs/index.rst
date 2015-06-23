@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Idiorm's documentation!
+Добпро пожаловать в документацию Idiorm!
 ==================================
 
-Contents:
+Содержание:
 
 .. toctree::
    :maxdepth: 2

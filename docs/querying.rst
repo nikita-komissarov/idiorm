@@ -36,12 +36,9 @@ Idiorm предполагает что столбец первчиных клю�
 .. примечание::
 
     В фоне, PSR-1 совместимый стиль использует магические методы `__call()` и 
-    `__callStatic()` для описания имен методов в стилистике camelCase у переданных методов с использованием подчеркивания. Затем используется `call_user_func_array()` для применения аргументов к методу. If this minimal overhead is too great then you can simply revert to using the underscore methods to avoid it. In
-    general this will not be a bottle neck in any application however and should
-    be considered a micro-optimisation.
+    `__callStatic()` для описания имен методов в стилистике camelCase у переданных методов с использованием подчеркивания. Затем используется `call_user_func_array()` для применения аргументов к методу. Если такие минимальные расходы ресурсов для вас большие, то вы можете просто вернуться к методам с подчеркиваниями, для избежания всего этого. В общем, это не будет узким местом в каком-либо приложении, однако и должно рассматриваться как микро-оптимизация.
 
-    As `__callStatic()` was added in PHP 5.3.0 you will need at least that version
-    of PHP to use this feature in any meaningful way.
+    Так как `__callStatic()` был добавлен в PHP 5.3.0 то вам нужно использовать как минимум эту версию PHP для использования этой возможности, так что подход к этому методу должен быть осмысленным.
 
 Одиночные записи
 ^^^^^^^^^^^^^^
@@ -113,11 +110,9 @@ Bloggs":
 
        ORM::configure('return_result_sets', true);
 
-You can also find many records as a result set instead of an array of Idiorm
-instances. This gives you the advantage that you can run batch operations on a
-set of results.
+Вы так же можете найти множество записей в качестве результирующих наборов вместо массива экземплятров Idiorm. Это дает преимущество в том, что вы можете запустить пакетные операции на наборе результатов.
 
-So for example instead of running this:
+Итак, для примера, вместо этого:
 
 .. code-block:: php
 
@@ -128,7 +123,7 @@ So for example instead of running this:
         $person->save();
     }
 
-You can simply do this instead:
+Вы можете использовать это:
 
 .. code-block:: php
 
@@ -137,11 +132,10 @@ You can simply do this instead:
     ->set('age', 50)
     ->save();
 
-To do this substitute any call to ``find_many()`` with
-``find_result_set()``.
+Чтобы это сделать, замените любой вызов метода ``find_many()`` методом ``find_result_set()``.
 
-A result set will also behave like an array so you can `count()` it and `foreach`
-over it just like an array.
+Результирующий набор ведет себя так же, как и массив, так что вы можете использовать на нем `count()` и `foreach`
+как и с массивом.
 
 .. code-block:: php
 
@@ -155,16 +149,14 @@ over it just like an array.
     <?php
     echo count(ORM::for_table('person')->find_result_set());
 
-.. note::
+.. примечание::
    
-   For deleting many records it is recommended that you use `delete_many()` as it
-   is more efficient than calling `delete()` on a result set.
+   Для удаления множества записей рекомендуется использовать `delete_many()`, так как этот метод более эффективен, нежели вызов `delete()` на результирующем наборе.
 
-As an associative array
+Как ассоциативный массив
 '''''''''''''''''''''''
 
-You can also find many records as an associative array instead of Idiorm
-instances. To do this substitute any call to ``find_many()`` with
+Так же вы можете найти множество записей в виде ассоциативного массива, вместо экземпляров Idiorm. Для этого замените любой вызов метода ``find_many()`` на метод
 ``find_array()``.
 
 .. code-block:: php
@@ -172,31 +164,24 @@ instances. To do this substitute any call to ``find_many()`` with
     <?php
     $females = ORM::for_table('person')->where('gender', 'female')->find_array();
 
-This is useful if you need to serialise the the query output into a
-format like JSON and you do not need the ability to update the returned
-records.
+Это полезно, если вам нужно преобразовать результат запроса в последовательную форму записи(сериализация массива) для JSON, и вам не нужно дополнительной возможности обновлять возвращаемые данные.
 
-Counting results
+Подсчет результатов
 ^^^^^^^^^^^^^^^^
 
-To return a count of the number of rows that would be returned by a
-query, call the ``count()`` method.
+Для подсчета числа строк, возвращаемых запросом, вызовите метод ``count()``.
 
 .. code-block:: php
 
     <?php
     $number_of_people = ORM::for_table('person')->count();
 
-Filtering results
+Фильтрация результатов
 ^^^^^^^^^^^^^^^^^
 
-Idiorm provides a family of methods to extract only records which
-satisfy some condition or conditions. These methods may be called
-multiple times to build up your query, and Idiorm's fluent interface
-allows method calls to be *chained* to create readable and
-simple-to-understand queries.
+Idiorm предоставляет семейство методов, позволяющих извлечь только те записи, которые удовлетворяют определенное условие(ия). Эти методы можно вызывать множество раз для построения запроса, и fluent interface у Idiorm позволяет строить *цепочку* из методов, для построения читабельных и простых для понимания запросов.
 
-*Caveats*
+*Предостережения*
 '''''''''
 
 Only a subset of the available conditions supported by SQL are available

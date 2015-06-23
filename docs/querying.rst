@@ -1,31 +1,20 @@
-Querying
+Запросы
 ========
 
-Idiorm provides a `*fluent
-interface* <http://en.wikipedia.org/wiki/Fluent_interface>`_ to enable
-simple queries to be built without writing a single character of SQL. If
-you've used `jQuery <http://jquery.com>`_ at all, you'll be familiar
-with the concept of a fluent interface. It just means that you can
-*chain* method calls together, one after another. This can make your
-code more readable, as the method calls strung together in order can
-start to look a bit like a sentence.
+Idiorm предоставляет `*fluent
+interface* <https://ru.wikipedia.org/wiki/Fluent_interface>`_ позволяющий построение простых запросов без единого использования SQL. Если вы использовали `jQuery <http://jquery.com>`_ вообще, то будете уже знакомы с концепцией fluent interface. Просто напросто это значит что вы можете
+*сцеплять в цепочку* вызов методов вместе, один после другого. Это может сделать ваш код более читабельным, нанизывая методы друг на друга, как-будто вы составляете предложение.
 
-All Idiorm queries start with a call to the ``for_table`` static method
-on the ORM class. This tells the ORM which table to use when making the
-query.
+Все запросы в Idiorm начинаются с вызова статического метода ``for_table`` класса ORM. Это сообщает ORM какую таблицу использовать при построении запроса.
 
-*Note that this method **does not** escape its query parameter and so
-the table name should **not** be passed directly from user input.*
+*Обратите внимание, что этот метод **не** экранирует свои параметры запроса, так что имя таблицы **не** должно быть передано напрямую от от вводимых пользователем данных.*
 
-Method calls which add filters and constraints to your query are then
-strung together. Finally, the chain is finished by calling either
-``find_one()`` or ``find_many()``, which executes the query and returns
-the result.
+Вызовы метода добавляют фильтры и ограничения в ваш запрос, нанизываясь друг на друга. Наконец, цепочка заканчивается вызовом метода
+``find_one()`` или ``find_many()``, которые выполняют запрос и возращают результат.
 
-Let's start with a simple example. Say we have a table called ``person``
-which contains the columns ``id`` (the primary key of the record -
-Idiorm assumes the primary key column is called ``id`` but this is
-configurable, see below), ``name``, ``age`` and ``gender``.
+Начнем с простых примеров. Скажим у нас есть таблица ``person``
+содержащая столбцы ``id`` (первичный ключ записи -
+Idiorm предполагает что столбец первчиных ключей называется ``id`` но это можно настроить, смотри ниже), ``name``, ``age`` и ``gender``.
 
 A note on PSR-1 and camelCase
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

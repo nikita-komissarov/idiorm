@@ -1,21 +1,20 @@
-Transactions
+Транзакции
 ============
 
-Idiorm doesn’t supply any extra methods to deal with transactions, but
-it’s very easy to use PDO’s built-in methods:
+Idiorm не поставляет каких-либо специальных методов для работы с транзакциями, но можно с легкостью использовать встронные в PDO меетоды:
 
 .. code-block:: php
 
     <?php
-    // Start a transaction
+    // Начало транзакции
     ORM::get_db()->beginTransaction();
 
-    // Commit a transaction
+    // Коммит транзакции
     ORM::get_db()->commit();
 
-    // Roll back a transaction
+    // Откат транзакции
     ORM::get_db()->rollBack();
 
-For more details, see `the PDO documentation on Transactions`_.
+Для более подробной информации, ознакомьтесь с `документацией PDO по Transactions`_.
 
-.. _the PDO documentation on Transactions: http://www.php.net/manual/en/pdo.transactions.php
+.. _документацией PDO по Transactions: http://php.net/manual/ru/pdo.transactions.php

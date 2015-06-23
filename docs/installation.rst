@@ -1,19 +1,18 @@
-Installation
+Установка
 ============
 
 Packagist
 ~~~~~~~~~
 
-This library is available through Packagist with the vendor and package
-identifier of ``j4mie/idiorm``
+Данная библиотека доступна через Packagist с идентификаторами vendor и package: ``j4mie/idiorm``
 
-Please see the `Packagist documentation`_ for further information.
+Пожалуйста, ознакомьтесь с `Packagist documentation`_ для более исчерпывающей информации.
 
-Download
+Загрузка
 ~~~~~~~~
 
-You can clone the git repository, download idiorm.php or a release tag
-and then drop the idiorm.php file in the vendors/3rd party/libs
-directory of your project.
+Вы можете склонировать git-репозиторий, скачать idiorm.php или release tag
+и затем поместить файл idiorm.php в директорию vendors/3rd party/libs
+вашего проекта.
 
 .. _Packagist documentation: http://packagist.org/

@@ -16,32 +16,27 @@ interface* <https://ru.wikipedia.org/wiki/Fluent_interface>`_ позволяющ
 содержащая столбцы ``id`` (первичный ключ записи -
 Idiorm предполагает что столбец первчиных ключей называется ``id`` но это можно настроить, смотри ниже), ``name``, ``age`` и ``gender``.
 
-Примечание по PSR-1 и camelCase
+Примечание по PSR-1 и стилю camelCase
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All the methods detailed in the documentation can also be called in a PSR-1 way:
-underscores (_) become camelCase. Here follows an example of one query chain
-being converted to a PSR-1 compliant style.
+Все методы, описанные в документации могут так же быть вызваны, используя стандарт PSR-1:
+подчеркивания (_) заменяются на стиль написания camelCase. Далее приведен пример одной цепочки запроса, конвертированной в совместимый с PSR-1 стиль.
 
 .. code-block:: php
 
     <?php
-    // documented and default style
+    // документация и стиль по-умолчанию
     $person = ORM::for_table('person')->where('name', 'Fred Bloggs')->find_one();
 
-    // PSR-1 compliant style
+    // PSR-1 совместимый стиль
     $person = ORM::forTable('person')->where('name', 'Fred Bloggs')->findOne();
 
-As you can see any method can be changed from the documented underscore (_) format
-to that of a camelCase method name.
+Как вы можете заметить, любой метод может быть изменен из формата с подчеркиваниями (_) как в документации в стиль camelCase.
 
-.. note::
+.. примечание::
 
-    In the background the PSR-1 compliant style uses the `__call()` and 
-    `__callStatic()` magic methods to map the camelCase method name you supply
-    to the original underscore method name. It then uses `call_user_func_array()`
-    to apply the arguments to the method. If this minimal overhead is too great
-    then you can simply revert to using the underscore methods to avoid it. In
+    В фоне, PSR-1 совместимый стиль использует магические методы `__call()` и 
+    `__callStatic()` для описания имен методов в стилистике camelCase у переданных методов с использованием подчеркивания. Затем используется `call_user_func_array()` для применения аргументов к методу. If this minimal overhead is too great then you can simply revert to using the underscore methods to avoid it. In
     general this will not be a bottle neck in any application however and should
     be considered a micro-optimisation.
 

@@ -138,7 +138,7 @@ PDO Режим ошибок
 PDO доступ к объекту
 ^^^^^^^^^^^^^^^^^
 
-=== Перевод находится в процессе ===
+*Перевод находится в процессе*
 Should it ever be necessary, the PDO object used by Idiorm may be
 accessed directly through ``ORM::get_db()``, or set directly via
 ``ORM::set_db()``. This should be an unusual occurance.

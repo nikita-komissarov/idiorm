@@ -185,25 +185,18 @@ Idiorm предоставляет семейство методов, позво�
 
 Только подмножество доступных условий, поддерживаемых SQL доступны
 при использовании Idiorm. Кроме того, все пункты ``WHERE`` будут соединены с использованием
-``AND``  together when the query is run. Support for ``OR``\ ing
-``WHERE`` clauses is not currently present.
+``AND`` при выполнении запроса. Поддержка ``OR`` в пунктах
+``WHERE`` в настоящее время отстутствует.
 
-These limits are deliberate: these are by far the most commonly used
-criteria, and by avoiding support for very complex queries, the Idiorm
-codebase can remain small and simple.
+Данные ограничения являются преднамеренными: ведь это наиболее используемые критерии, и избегая поддержки очень сложных запросов, код Idiorm может оставаться маленьким и простым.
 
-Some support for more complex conditions and queries is provided by the
-``where_raw`` and ``raw_query`` methods (see below). If you find
-yourself regularly requiring more functionality than Idiorm can provide,
-it may be time to consider using a more full-featured ORM.
+Некоторая поддержка более сложных условий и запросов реализована в методах ``where_raw`` и ``raw_query`` (смотрите ниже). Если вы поймете, что чаще нуждаетесь в в большем функционале, нежели содержит Idiorm,
+то возможно пришло время рассмотреть более полнофункциональный ORM.
 
 Равенство: ``where``, ``where_equal``, ``where_not_equal``
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-By default, calling ``where`` with two parameters (the column name and
-the value) will combine them using an equals operator (``=``). For
-example, calling ``where('name', 'Fred')`` will result in the clause
-``WHERE name = "Fred"``.
+По-умолчанию, вызывая ``where`` с двумя параметрами (название столбца и значение) соединит их, используя оператор равенства (``=``). Например, вызов ``where('name', 'Fred')`` вернет следующее: ``WHERE name = "Fred"``.
 
 If your coding style favours clarity over brevity, you may prefer to use
 the ``where_equal`` method: this is identical to ``where``.

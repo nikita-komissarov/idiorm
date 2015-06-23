@@ -1,8 +1,7 @@
-Philosophy
+Философия
 ==========
 
-The `Pareto Principle`_ states that *roughly 80% of the effects come
-from 20% of the causes.* In software development terms, this could be
+`Закон Парето`_ гласит, что *20% усилий дают 80% результата.* In software development terms, this could be
 translated into something along the lines of *80% of the results come
 from 20% of the complexity*. In other words, you can get pretty far by
 being pretty stupid.

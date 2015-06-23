@@ -1,34 +1,30 @@
-Configuration
+Конфигурация
 =============
 
-The first thing you need to know about Idiorm is that *you don’t need to
-define any model classes to use it*. With almost every other ORM, the
-first thing to do is set up your models and map them to database tables
-(through configuration variables, XML files or similar). With Idiorm,
-you can start using the ORM straight away.
+Первое, что нужно знать об Idiorm - *вам не нужно объявлять какие-либо классы модели для её использования*. С почти любой другой ORM, первым шагом является установка моделей и их связка с таблицами из базы данных
+(через переменные конфигурации, XML файлы и тому подобное). С Idiorm,
+вы можете приступить к использованию ORM сразу же.
 
-Setup
+Установка
 ~~~~~
 
-First, ``require`` the Idiorm source file:
+Первым делом, укажите файл исходного кода Idiorm в ``require``:
 
 .. code-block:: php
 
     <?php
     require_once 'idiorm.php';
 
-Then, pass a *Data Source Name* connection string to the ``configure``
-method of the ORM class. This is used by PDO to connect to your
-database. For more information, see the `PDO documentation`_.
+Затем передайте *Data Source Name* строку соединения в метод ``configure``
+класса ORM. Он используется PDO для соединения с вашей базой данных. Для более детальной информации, смотри `документацию PDO`_.
 
 .. code-block:: php
 
     <?php
     ORM::configure('sqlite:./example.db');
 
-You may also need to pass a username and password to your database
-driver, using the ``username`` and ``password`` configuration options.
-For example, if you are using MySQL:
+Вы так же можете передать имя пользователя и пароль в драйвер базы данных, используя параметры конфигурации ``username`` и ``password``.
+Например, если вы используете MySQL:
 
 .. code-block:: php
 
@@ -37,9 +33,9 @@ For example, if you are using MySQL:
     ORM::configure('username', 'database_user');
     ORM::configure('password', 'top_secret');
 
-Also see “Configuration” section below.
+Смотрите так же секцию “Конфигурация” ниже.
 
-Configuration
+Конфигурация
 ~~~~~~~~~~~~~
 
 Other than setting the DSN string for the database connection (see
@@ -360,7 +356,7 @@ If you wish to use custom caching functions, you can set them from the configure
     });
 
 
-.. _PDO documentation: http://php.net/manual/en/pdo.construct.php
+.. _документацию PDO: http://php.net/manual/ru/pdo.construct.php
 .. _the PDO documentation: http://php.net/manual/en/pdo.construct.php
 .. _the PDO set attribute documentation: http://php.net/manual/en/pdo.setattribute.php
 .. _PDOStatement documentation: http://php.net/manual/en/class.pdostatement.php

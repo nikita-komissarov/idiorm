@@ -12,9 +12,8 @@ interface* <https://ru.wikipedia.org/wiki/Fluent_interface>`_ позволяющ
 Вызовы метода добавляют фильтры и ограничения в ваш запрос, нанизываясь друг на друга. Наконец, цепочка заканчивается вызовом метода
 ``find_one()`` или ``find_many()``, которые выполняют запрос и возращают результат.
 
-Начнем с простых примеров. Скажим у нас есть таблица ``person``
-содержащая столбцы ``id`` (первичный ключ записи -
-Idiorm предполагает что столбец первчиных ключей называется ``id`` но это можно настроить, смотри ниже), ``name``, ``age`` и ``gender``.
+Начнем с простых примеров. Скажим у нас есть таблица ``person`` содержащая столбцы ``id`` (первичный ключ записи -
+Idiorm предполагает что столбец первчиных ключей называется ``id`` но это можно настроить, смотри ниже), ``name``\, ``age`` и ``gender``\.
 
 Примечание по PSR-1 и стилю camelCase
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -179,14 +178,14 @@ Bloggs":
 Фильтрация результатов
 ^^^^^^^^^^^^^^^^^
 
-Idiorm предоставляет семейство методов, позволяющих извлечь только те записи, которые удовлетворяют определенное условие(ия). Эти методы можно вызывать множество раз для построения запроса, и fluent interface у Idiorm позволяет строить *цепочку* из методов, для построения читабельных и простых для понимания запросов.
+Idiorm предоставляет семейство методов, позволяющих извлечь только те записи, которые удовлетворяют определенному условию(ям). Эти методы можно вызывать множество раз для построения запроса, а fluent interface у Idiorm позволяет строить *цепочку* из таких методов, для построения читабельных и простых к пониманию запросов.
 
 *Предостережения*
 '''''''''
 
-Only a subset of the available conditions supported by SQL are available
-when using Idiorm. Additionally, all the ``WHERE`` clauses will be
-``AND``\ ed together when the query is run. Support for ``OR``\ ing
+Только подмножество доступных условий, поддерживаемых SQL доступны
+при использовании Idiorm. Кроме того, все пункты ``WHERE`` будут соединены с использованием
+``AND``  together when the query is run. Support for ``OR``\ ing
 ``WHERE`` clauses is not currently present.
 
 These limits are deliberate: these are by far the most commonly used
@@ -198,7 +197,7 @@ Some support for more complex conditions and queries is provided by the
 yourself regularly requiring more functionality than Idiorm can provide,
 it may be time to consider using a more full-featured ORM.
 
-Equality: ``where``, ``where_equal``, ``where_not_equal``
+Равенство: ``where``, ``where_equal``, ``where_not_equal``
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 By default, calling ``where`` with two parameters (the column name and

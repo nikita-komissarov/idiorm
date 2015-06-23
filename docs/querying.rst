@@ -16,7 +16,7 @@ interface* <https://ru.wikipedia.org/wiki/Fluent_interface>`_ позволяющ
 содержащая столбцы ``id`` (первичный ключ записи -
 Idiorm предполагает что столбец первчиных ключей называется ``id`` но это можно настроить, смотри ниже), ``name``, ``age`` и ``gender``.
 
-A note on PSR-1 and camelCase
+Примечание по PSR-1 и camelCase
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All the methods detailed in the documentation can also be called in a PSR-1 way:

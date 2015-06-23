@@ -48,14 +48,12 @@ to that of a camelCase method name.
     As `__callStatic()` was added in PHP 5.3.0 you will need at least that version
     of PHP to use this feature in any meaningful way.
 
-Single records
+Одиночные записи
 ^^^^^^^^^^^^^^
 
-Any method chain that ends in ``find_one()`` will return either a
-*single* instance of the ORM class representing the database row you
-requested, or ``false`` if no matching record was found.
+Любая цепочка методов, заканчивающаяся на ``find_one()`` вернет либо *единичный* экземпляр класса ORM представляющий ряд из базы данных по указанному запросу, или ``false`` если не было найдено удовлетворяющих запросу записей.
 
-To find a single record where the ``name`` column has the value "Fred
+Чтобы найти одиночную запись, где столбец ``name`` имеет значение "Fred
 Bloggs":
 
 .. code-block:: php
@@ -63,19 +61,17 @@ Bloggs":
     <?php
     $person = ORM::for_table('person')->where('name', 'Fred Bloggs')->find_one();
 
-This roughly translates into the following SQL:
+Грубо переводя на язык SQL, это:
 ``SELECT * FROM person WHERE name = "Fred Bloggs"``
 
-To find a single record by ID, you can pass the ID directly to the
-``find_one`` method:
+Чтобы найти единичную запись по ID, вы можете передать ID прямо в метод ``find_one``:
 
 .. code-block:: php
 
     <?php
     $person = ORM::for_table('person')->find_one(5);
 
-If you are using a compound primary key, you can find the records
-using an array as the parameter:
+Если вы используете составной первичный ключ, то можете найти записи используя массив в качестве параметра:
 
 .. code-block:: php
 
@@ -86,40 +82,37 @@ using an array as the parameter:
     ));
 
 
-Multiple records
+Множество записей
 ^^^^^^^^^^^^^^^^
 
-.. note::
+.. примечание::
 
-   It is recommended that you use results sets over arrays - see `As a result set`
-   below.
+   Рекомендуется использовать результирующие наборы над массивами - смотрите `Как результирующий набор`
+   ниже.
 
-Any method chain that ends in ``find_many()`` will return an *array* of
-ORM class instances, one for each row matched by your query. If no rows
-were found, an empty array will be returned.
+Любая цепочка методов, заканчивающаяся на ``find_many()`` вернет *массив*(array) экземпляров ORM-класса, по одному для каждой удовлетворяющей запросу строки. Если не было найдено ни одной строки, то будет возвращен пустой массив.
 
-To find all records in the table:
+Чтобы найти все записи в таблице:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->find_many();
 
-To find all records where the ``gender`` is ``female``:
+Чтобы найти все записи, где ``gender`` равен ``female``:
 
 .. code-block:: php
 
     <?php
     $females = ORM::for_table('person')->where('gender', 'female')->find_many();
 
-As a result set
+Как результирующий набор
 '''''''''''''''
 
-.. note::
+.. примечание::
 
-   There is a configuration setting ``return_result_sets`` that will cause
-   ``find_many()`` to return result sets by default. It is recommended that you
-   turn this setting on:
+   Существует параметр конфигурации ``return_result_sets`` который заставляет метод
+   ``find_many()`` по-умолчанию возвращать данные в видео результирующего набора. Рекомендуется включить этот параметр:
 
    ::
 

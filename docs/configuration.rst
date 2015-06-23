@@ -38,48 +38,40 @@
 Конфигурация
 ~~~~~~~~~~~~~
 
-Other than setting the DSN string for the database connection (see
-above), the ``configure`` method can be used to set some other simple
-options on the ORM class. Modifying settings involves passing a
-key/value pair to the ``configure`` method, representing the setting you
-wish to modify and the value you wish to set it to.
+Помимо передачи DSN строки для подключения к базе данных (смотри выше), метод ``configure`` можно использовать и для установки некоторых других простых настроек ORM класса. Изменение настроек подразумевает передачу в метод ``configure`` пар ключ/значение, представляющих название параметра, который вы хотите поменять, и значение, которое хотите ему установить.
 
 .. code-block:: php
 
     <?php
-    ORM::configure('setting_name', 'value_for_setting');
+    ORM::configure('название_параметра', 'значение_для_параметра');
 
-A shortcut is provided to allow passing multiple key/value pairs at
-once.
+Следующий метод используется для передачи множества пар ключ/значение за раз.
 
 .. code-block:: php
 
     <?php
     ORM::configure(array(
-        'setting_name_1' => 'value_for_setting_1', 
-        'setting_name_2' => 'value_for_setting_2', 
+        'название_параметра_1' => 'значение_для_параметра_1', 
+        'название_параметра_2' => 'значение_для_параметра_2', 
         'etc' => 'etc'
     ));
 
-Use the ``get_config`` method to read current settings.
+Для чтения текущей конфигурации, используйте метод ``get_config``.
 
 .. code-block:: php
 
     <?php
     $isLoggingEnabled = ORM::get_config('logging');
     ORM::configure('logging', false);
-    // some crazy loop we don't want to log
+    // какой-то бешенный цикл, который мы не хотим добавлять в лог
     ORM::configure('logging', $isLoggingEnabled);
 
-Database authentication details
+Подробности аутентификации в базе данных
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Settings: ``username`` and ``password``
+Параметры: ``username`` и ``password``
 
-Some database adapters (such as MySQL) require a username and password
-to be supplied separately to the DSN string. These settings allow you to
-provide these values. A typical MySQL connection setup might look like
-this:
+Некоторые адаптеры баз данных (такие как MySQL) требуют раздельной передачи имени пользователя (username) и пароля (password) в DSN строке. Эти параметры позволяют вам передать их. Типичная настройка соединения MySQL может выгялдеть так:
 
 .. code-block:: php
 
@@ -88,8 +80,7 @@ this:
     ORM::configure('username', 'database_user');
     ORM::configure('password', 'top_secret');
 
-Or you can combine the connection setup into a single line using the
-configuration array shortcut:
+Или вы можете соединить настройку соединения в одну строку, используя массив конфигурации:
 
 .. code-block:: php
 
@@ -100,61 +91,54 @@ configuration array shortcut:
         'password' => 'top_secret'
     ));
 
-Result sets
+Наборы результатов
 ^^^^^^^^^^^
 
-Setting: ``return_result_sets``
+Параметр: ``return_result_sets``
 
-Collections of results can be returned as an array (default) or as a result set.
-See the `find_result_set()` documentation for more information.
+Коллекция результатов данных может быть возвращена в качестве массива (по-умолчанию) или в виде результирующего набора.
+Смотрите документацию о `find_result_set()` для более подробной информации.
 
 .. code-block:: php
 
     <?php
-    ORM::configure('return_result_sets', true); // returns result sets
+    ORM::configure('return_result_sets', true); // возвращает результирующий набор
 
 
-.. note::
+.. примечание::
 
-   It is recommended that you setup your projects to use result sets as they
-   are more flexible.
+   Рекомендуется настроить ваши проекты для работы с результирующими наборами, так как они более гибкие.
 
-PDO Driver Options
+PDO Параметры драйвера
 ^^^^^^^^^^^^^^^^^^
 
-Setting: ``driver_options``
+Параметр: ``driver_options``
 
-Some database adapters require (or allow) an array of driver-specific
-configuration options. This setting allows you to pass these options
-through to the PDO constructor. For more information, see `the PDO
-documentation`_. For example, to force the MySQL driver to use UTF-8 for
-the connection:
+Некоторые адаптеры базы данных требуют (или позволяют использовать) массив параметров конфигурации для конкретного драйвера. Это позволяет вам передавать эти параметры через конструктор PDO. Для более подробной информации, смотрите `документацию PDO`_. Например, чтобы заставить драйвер MySQL использовать кодировку UTF-8 для соединения:
 
 .. code-block:: php
 
     <?php
     ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
-PDO Error Mode
+PDO Режим ошибок
 ^^^^^^^^^^^^^^
 
-Setting: ``error_mode``
+Параметр: ``error_mode``
 
-This can be used to set the ``PDO::ATTR_ERRMODE`` setting on the
-database connection class used by Idiorm. It should be passed one of the
-class constants defined by PDO. For example:
+Можно использовать для установки параметра ``PDO::ATTR_ERRMODE`` у класса соединения с базой данных, используемой Idiorm. Должна быть передана одна из объявленных в классе констант PDO. Пример:
 
 .. code-block:: php
 
     <?php
     ORM::configure('error_mode', PDO::ERRMODE_WARNING);
 
-The default setting is ``PDO::ERRMODE_EXCEPTION``. For full details of
-the error modes available, see `the PDO set attribute documentation`_.
+Параметром по-умолчанию является ``PDO::ERRMODE_EXCEPTION``. Для более подробной информации о доступных режимах ошибок, смотри `документация PDO - присвоение атрибута`_.
 
-PDO object access
+PDO доступ к объекту
 ^^^^^^^^^^^^^^^^^
 
+=== Перевод находится в процессе ===
 Should it ever be necessary, the PDO object used by Idiorm may be
 accessed directly through ``ORM::get_db()``, or set directly via
 ``ORM::set_db()``. This should be an unusual occurance.
@@ -167,10 +151,10 @@ off, or to access the ``PDOStatement::rowCount()`` method, which returns
 differing results based on the underlying database. For more
 information, see the `PDOStatement documentation`_.
 
-Identifier quote character
+Идентификатор символа кавычек
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Setting: ``identifier_quote_character``
+Параметр: ``identifier_quote_character``
 
 Set the character used to quote identifiers (eg table name, column
 name). If this is not set, it will be autodetected based on the database
@@ -358,6 +342,6 @@ If you wish to use custom caching functions, you can set them from the configure
 
 .. _документацию PDO: http://php.net/manual/ru/pdo.construct.php
 .. _the PDO documentation: http://php.net/manual/en/pdo.construct.php
-.. _the PDO set attribute documentation: http://php.net/manual/en/pdo.setattribute.php
+.. _документация PDO - присвоение атрибута: http://php.net/manual/ru/pdo.setattribute.php
 .. _PDOStatement documentation: http://php.net/manual/en/class.pdostatement.php
 .. _Memcached: http://www.memcached.org/

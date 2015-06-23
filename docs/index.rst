@@ -20,7 +20,7 @@
    connections
 
 
-Indices and tables
+Индексы и таблицы
 ==================
 
 * :ref:`genindex`

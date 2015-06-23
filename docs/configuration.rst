@@ -138,11 +138,9 @@ PDO Режим ошибок
 PDO доступ к объекту
 ^^^^^^^^^^^^^^^^^
 
-*Перевод находится в процессе*
-Should it ever be necessary, the PDO object used by Idiorm may be
-accessed directly through ``ORM::get_db()``, or set directly via
-``ORM::set_db()``. This should be an unusual occurance.
+Если он когда-то потребуется, то объект PDO, используемый в Idiorm может быть получен напрямую через ``ORM::get_db()``, или установлен напрямую через ``ORM::set_db()``. Однако это редкое явление.
 
+*Перевод находится в процессе*
 After a statement has been executed by any means, such as ``::save()``
 or ``::raw_execute()``, the ``PDOStatement`` instance used may be
 accessed via ``ORM::get_last_statement()``. This may be useful in order
@@ -150,49 +148,42 @@ to access ``PDOStatement::errorCode()``, if PDO exceptions are turned
 off, or to access the ``PDOStatement::rowCount()`` method, which returns
 differing results based on the underlying database. For more
 information, see the `PDOStatement documentation`_.
+*Перевод находится в процессе*
 
 Идентификатор символа кавычек
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Параметр: ``identifier_quote_character``
 
-Set the character used to quote identifiers (eg table name, column
-name). If this is not set, it will be autodetected based on the database
-driver being used by PDO.
+Устанавливает символ, используемый для идентификации кавычек (например имени таблицы, имени столбца). Если не задан, то будет определен автоматически в зависимости от драйвера базы данных, используемого в PDO.
 
-ID Column
+ID столбца
 ^^^^^^^^^
 
-By default, the ORM assumes that all your tables have a primary key
-column called ``id``. There are two ways to override this: for all
-tables in the database, or on a per-table basis.
+По-умолчанию, ORM предполагает, что у всех ваших таблиц есть колонка первичного ключа(primary key)
+ с именем ``id``. Есть два способа это переопределить: для всех таблиц в базе данных, или на основе каждой таблицы.
 
-Setting: ``id_column``
+Параметр: ``id_column``
 
-This setting is used to configure the name of the primary key column for
-all tables. If your ID column is called ``primary_key``, use:
+Этот параметр используется для конфигурации имени столбца первичного ключа (primary key) всех таблиц. Если ваша ID-колонка имеет название ``primary_key``, используйте:
 
 .. code-block:: php
 
     <?php
     ORM::configure('id_column', 'primary_key');
 
-You can specify a compound primary key using an array:
+Вы можете указать `составной первичный ключ`_, используя массив:
 
 .. code-block:: php
 
     <?php
     ORM::configure('id_column', array('pk_1', 'pk_2'));
 
-Note: If you use a auto-increment column in the compound primary key then it
-should be the first one defined into the array.
+Примечание: Если вы используете столбец с auto-increment в составном первичном ключе, то он должен быть объявлен первым в массиве.
 
-Setting: ``id_column_overrides``
+Параметр: ``id_column_overrides``
 
-This setting is used to specify the primary key column name for each
-table separately. It takes an associative array mapping table names to
-column names. If, for example, your ID column names include the name of
-the table, you can use the following configuration:
+Этот параметр используется для указания имени столбца первичного ключа для каждой таблицы отдельно. Он принимает ассоциативный массив, описывающий название таблиц и имен столбцов. Например, если, имена ID-столбца включают имя таблицы, то вы можете использовать следующую настройку:
 
 .. code-block:: php
 
@@ -202,13 +193,12 @@ the table, you can use the following configuration:
         'role' => 'role_id',
     ));
 
-As with ``id_column`` setting, you can specify a compound primary key
-using an array.
+Как и параметр ``id_column``, вы можеите указать составной первичный ключ, используя массив.
 
 Limit clause style
 ^^^^^^^^^^^^^^^^^^
 
-Setting: ``limit_clause_style``
+Параметр: ``limit_clause_style``
 
 You can specify the limit clause style in the configuration. This is to facilitate
 a MS SQL style limit clause that uses the ``TOP`` syntax.
@@ -221,27 +211,24 @@ Acceptable values are ``ORM::LIMIT_STYLE_TOP_N`` and ``ORM::LIMIT_STYLE_LIMIT``.
     will automatically select the ``ORM::LIMIT_STYLE_TOP_N`` for you unless you
     override the setting.
 
-Query logging
+Лог запросов
 ^^^^^^^^^^^^^
 
-Setting: ``logging``
+Параметр: ``logging``
 
-Idiorm can log all queries it executes. To enable query logging, set the
-``logging`` option to ``true`` (it is ``false`` by default).
+Idiorm может записывать в лог все вызываемые запросы. Для включения лога запросов, установите параметр
+``logging`` на ``true`` (по-умолчанию он имеет значение ``false``).
 
-When query logging is enabled, you can use two static methods to access
-the log. ``ORM::get_last_query()`` returns the most recent query
-executed. ``ORM::get_query_log()`` returns an array of all queries
-executed.
+Когда лог запросов включен, вы можете использовать два статических метода для доступа к логу. ``ORM::get_last_query()`` возвращает самый последний вызванный запрос. ``ORM::get_query_log()`` возвращает массив всех вызванных запросов.
 
 Query logger
 ^^^^^^^^^^^^
 
-Setting: ``logger``
+Параметр: ``logger``
 
-.. note::
+.. примечание::
 
-    You must enable ``logging`` for this setting to have any effect.
+    Вы должны включить ``logging`` для использования этого параметра.
 
 It is possible to supply a ``callable`` to this configuration setting, which will
 be executed for every query that idiorm executes. In PHP a ``callable`` is anything
@@ -345,3 +332,4 @@ If you wish to use custom caching functions, you can set them from the configure
 .. _документация PDO - присвоение атрибута: http://php.net/manual/ru/pdo.setattribute.php
 .. _PDOStatement documentation: http://php.net/manual/en/class.pdostatement.php
 .. _Memcached: http://www.memcached.org/
+.. _составной первичный ключ: https://ru.wikipedia.org/wiki/%D0%9F%D0%B5%D1%80%D0%B2%D0%B8%D1%87%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BB%D1%8E%D1%87#.D0.9F.D1.80.D0.BE.D1.81.D1.82.D1.8B.D0.B5_.D0.B8_.D1.81.D0.BE.D1.81.D1.82.D0.B0.D0.B2.D0.BD.D1.8B.D0.B5_.D0.BA.D0.BB.D1.8E.D1.87.D0.B8

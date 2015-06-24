@@ -1,8 +1,8 @@
 Запросы
 ========
 
-Idiorm предоставляет `\*fluent
-interface* <https://ru.wikipedia.org/wiki/Fluent_interface>`_ позволяющий построение простых запросов без единого использования SQL. Если вы использовали `jQuery <http://jquery.com>`_ вообще, то будете уже знакомы с концепцией fluent interface. Просто напросто это значит что вы можете
+Idiorm предоставляет `fluent
+interface <https://ru.wikipedia.org/wiki/Fluent_interface>`_ позволяющий построение простых запросов без единого использования SQL. Если вы использовали `jQuery <http://jquery.com>`_ вообще, то будете уже знакомы с концепцией fluent interface. Просто напросто это значит что вы можете
 *сцеплять в цепочку* вызов методов вместе, один после другого. Это может сделать ваш код более читабельным, нанизывая методы друг на друга, как-будто вы составляете предложение.
 
 Все запросы в Idiorm начинаются с вызова статического метода ``for_table`` класса ORM. Это сообщает ORM какую таблицу использовать при построении запроса.
@@ -437,104 +437,97 @@ Result columns
     SELECT * FROM `person`;
 
 Метод ``select`` дает контроль над тем, какие столбцы будут возвращены.
-Вызовите ``select`` несколько раз для указания нужных столбцов или используйте ```select_many <#shortcuts-for-specifying-many-columns>```_ для указания нескольких столбцов за раз.
+Вызовите ``select`` несколько раз для указания нужных столбцов или используйте `select_many <#shortcuts-for-specifying-many-columns>`_ для указания нескольких столбцов за раз.
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->select('name')->select('age')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
     <?php
     SELECT `name`, `age` FROM `person`;
 
-Optionally, you may also supply a second argument to ``select`` to
-specify an alias for the column:
+Опционально, можно передать второй аргумент в ``select`` для указания алиаса столбца:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->select('name', 'person_name')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
     <?php
     SELECT `name` AS `person_name` FROM `person`;
 
-Column names passed to ``select`` are quoted automatically, even if they
-contain ``table.column``-style identifiers:
+Названия столбцов, переданные в ``select`` автоматически заносятся в кавычки, даже если содержат идентификаторы в стиле ``table.column``\:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->select('person.name', 'person_name')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
     <?php
     SELECT `person`.`name` AS `person_name` FROM `person`;
 
-If you wish to override this behaviour (for example, to supply a
-database expression) you should instead use the ``select_expr`` method.
-Again, this takes the alias as an optional second argument. You can
-specify multiple expressions by calling ``select_expr`` multiple times
-or use ```select_many_expr`` <#shortcuts-for-specifying-many-columns>`_ to specify many expressions at once.
+Если вы хотите переопределить это поведение (например, для передачи выражения из базы данных) то вместо этого метода нужно использовать метод ``select_expr``\.
+Он так же принимает алиас в качестве второго аргумента. Можно указать несколько выражений, вызвав ``select_expr`` несколько раз или использовать `select_many_expr <#shortcuts-for-specifying-many-columns>`_ для указания нескольких выражений за раз.
 
 .. code-block:: php
 
     <?php
-    // NOTE: For illustrative purposes only. To perform a count query, use the count() method.
+    // Примечание: Только для иллюстрации. Для выполнения подсчется, используйте метод count().
     $people_count = ORM::for_table('person')->select_expr('COUNT(*)', 'count')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
     <?php
     SELECT COUNT(*) AS `count` FROM `person`;
 
-Shortcuts for specifying many columns
+Короткая запись для указания множества столбцов
 '''''''''''''''''''''''''''''''''''''
 
-``select_many`` and ``select_many_expr`` are very similar, but they
-allow you to specify more than one column at once. For example:
+``select_many`` и ``select_many_expr`` очень похожи, но позволяют указать более одного столбца за раз.
+Например:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->select_many('name', 'age')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
     <?php
     SELECT `name`, `age` FROM `person`;
 
-To specify aliases you need to pass in an array (aliases are set as the
-key in an associative array):
+Для указания алиасов, вам нужно передать массив (алиас будет называться так же, как ключ в ассоциативном массиве):
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->select_many(array('first_name' => 'name'), 'age', 'height')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
     <?php
     SELECT `name` AS `first_name`, `age`, `height` FROM `person`;
 
-You can pass the the following styles into ``select_many`` and
-``select_many_expr`` by mixing and matching arrays and parameters:
+Вы можете использовать такой стиль при передаче аргументов в ``select_many`` и ``select_many_expr`` путем смешивания и сопоставления массивов и параметров:
 
 .. code-block:: php
 
@@ -543,15 +536,14 @@ You can pass the the following styles into ``select_many`` and
     select_many('column', 'column2', 'column3')
     select_many(array('column', 'column2', 'column3'), 'column4', 'column5')
 
-All the select methods can also be chained with each other so you could
-do the following to get a neat select query including an expression:
+Все методы выборки могут быть соединены в цепочку друг с другом, так что вы могли сделать следующий аккуратный запрос на выборку включающий в себя выражения:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->select_many('name', 'age', 'height')->select_expr('NOW()', 'timestamp')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
@@ -561,8 +553,7 @@ Will result in the query:
 DISTINCT
 ^^^^^^^^
 
-To add a ``DISTINCT`` keyword before the list of result columns in your
-query, add a call to ``distinct()`` to your query chain.
+Для добавления ключевого слова ``DISTINCT`` перед списком результирующих столбцов в запросе, добавьте вызов метода ``distinct()`` в цепочку запроса.
 
 .. code-block:: php
 

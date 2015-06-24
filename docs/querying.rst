@@ -1,8 +1,8 @@
 Запросы
 ========
 
-Idiorm предоставляет `*fluent
-interface* <https://ru.wikipedia.org/wiki/Fluent_interface>`_ позволяющий построение простых запросов без единого использования SQL. Если вы использовали `jQuery <http://jquery.com>`_ вообще, то будете уже знакомы с концепцией fluent interface. Просто напросто это значит что вы можете
+Idiorm предоставляет *`fluent
+interface <https://ru.wikipedia.org/wiki/Fluent_interface>`_* позволяющий построение простых запросов без единого использования SQL. Если вы использовали `jQuery <http://jquery.com>`_ вообще, то будете уже знакомы с концепцией fluent interface. Просто напросто это значит что вы можете
 *сцеплять в цепочку* вызов методов вместе, один после другого. Это может сделать ваш код более читабельным, нанизывая методы друг на друга, как-будто вы составляете предложение.
 
 Все запросы в Idiorm начинаются с вызова статического метода ``for_table`` класса ORM. Это сообщает ORM какую таблицу использовать при построении запроса.
@@ -355,11 +355,9 @@ Idiorm предоставляет семейство методов, позво�
 Limit и offset
 ''''''''''''''''''
 
-*Note that these methods **do not** escape their query parameters and so
-these should **not** be passed directly from user input.*
+*Обратите внимание, что эти методы **не** экранируют свои паораметры в запросе, поэтому они **не** должны передаваться напрямую от пользователя.*
 
-The ``limit`` and ``offset`` methods map pretty closely to their SQL
-equivalents.
+Методы ``limit`` и ``offset`` очень похожи на эквивалентные им в SQL.
 
 .. code-block:: php
 
@@ -369,21 +367,17 @@ equivalents.
 Порядок
 ''''''''
 
-*Note that these methods **do not** escape their query parameters and so
-these should **not** be passed directly from user input.*
+*Обратите внимание, что эти методы **не** экранируют свои паораметры в запросе, поэтому они **не** должны передаваться напрямую от пользователя.*
 
-Two methods are provided to add ``ORDER BY`` clauses to your query.
-These are ``order_by_desc`` and ``order_by_asc``, each of which takes a
-column name to sort by. The column names will be quoted.
+Доступны два метода для добавления к запросу пункта ``ORDER BY``\.
+Это ``order_by_desc`` и ``order_by_asc``, каждый из которых принимает название столбца для сортировки. Имена столбцов будут писаться в кавычках.
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->order_by_asc('gender')->order_by_desc('name')->find_many();
 
-If you want to order by something other than a column name, then use the
-``order_by_expr`` method to add an unquoted SQL expression as an
-``ORDER BY`` clause.
+Если вы хотите упорядочить по какому-то другому признаку, отличному от названия столбца, то используйте метод ``order_by_expr`` для добавления SQL выражения без кавычек, как в пункте ``ORDER BY``\.
 
 .. code-block:: php
 
@@ -393,19 +387,16 @@ If you want to order by something other than a column name, then use the
 Группировка
 ^^^^^^^^
 
-*Note that this method **does not** escape it query parameter and so
-this should **not** by passed directly from user input.*
+*Обратите внимание, что эти методы **не** экранируют свои паораметры в запросе, поэтому они **не** должны передаваться напрямую от пользователя.*
 
-To add a ``GROUP BY`` clause to your query, call the ``group_by``
-method, passing in the column name. You can call this method multiple
-times to add further columns.
+Для добавления пункта ``GROUP BY`` в строку запроса, вызовите метод ``group_by`` передав название столца в качестве аргумента. Можно вызывать этот метод множество раз для добавления большего числа колонок.
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->where('gender', 'female')->group_by('name')->find_many();
 
-It is also possible to ``GROUP BY`` a database expression:
+Так же возможно использование ``GROUP BY`` с выражениями из базы данных:
 
 .. code-block:: php
 
@@ -415,13 +406,13 @@ It is also possible to ``GROUP BY`` a database expression:
 Having
 ^^^^^^
 
-When using aggregate functions in combination with a ``GROUP BY`` you can use
-``HAVING`` to filter based on those values.
+При использовании агрегирующих функций в комбинации с ``GROUP BY`` вы можете использовать
+``HAVING`` для фильтрации, относительно этих значений.
 
-``HAVING`` works in exactly the same way as all of the ``where*`` functions in Idiorm.
-Substitute ``where_`` for ``having_`` to make use of these functions.
+``HAVING`` работает точно таким же способом, что и все методы ``where*`` в Idiorm.
+Замените ``where_`` на ``having_`` для использования этих функций.
 
-For example:
+Например:
 
 .. code-block:: php
 
@@ -431,25 +422,22 @@ For example:
 Result columns
 ^^^^^^^^^^^^^^
 
-By default, all columns in the ``SELECT`` statement are returned from
-your query. That is, calling:
+По-умолчанию, все столбцы в выражении ``SELECT`` будут возвращены после запроса. То есть, вызывая:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->find_many();
 
-Will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
     <?php
     SELECT * FROM `person`;
 
-The ``select`` method gives you control over which columns are returned.
-Call ``select`` multiple times to specify columns to return or use
-```select_many`` <#shortcuts-for-specifying-many-columns>`_ to specify
-many columns at once.
+Метод ``select`` дает контроль над тем, какие столбцы будут возвращены.
+Вызовите ``select`` несколько раз для указания нужных столбцов или используйте ```select_many <#shortcuts-for-specifying-many-columns>```_ для указания нескольких столбцов за раз.
 
 .. code-block:: php
 
@@ -497,8 +485,7 @@ If you wish to override this behaviour (for example, to supply a
 database expression) you should instead use the ``select_expr`` method.
 Again, this takes the alias as an optional second argument. You can
 specify multiple expressions by calling ``select_expr`` multiple times
-or use ```select_many_expr`` <#shortcuts-for-specifying-many-columns>`_
-to specify many expressions at once.
+or use ```select_many_expr`` <#shortcuts-for-specifying-many-columns>`_ to specify many expressions at once.
 
 .. code-block:: php
 

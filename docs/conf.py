@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'IdiorRuDocs'
+project = u'Idiorm - Русская документация'
 copyright = u'2015, Kirill Saltykov'
 
 # The version info for the project you're documenting, acts as replacement for

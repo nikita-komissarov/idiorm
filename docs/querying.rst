@@ -81,7 +81,7 @@ Bloggs":
    Рекомендуется использовать результирующие наборы над массивами - смотрите `Как результирующий набор`
    ниже.
 
-Любая цепочка методов, заканчивающаяся на ``find_many()`` вернет *array* экземпляров ORM-класса, по одному для каждой удовлетворяющей запросу строки. Если не было найдено ни одной строки, то будет возвращен пустой массив.
+Любая цепочка методов, заканчивающаяся на ``find_many()`` вернет *массив* экземпляров ORM-класса, по одному для каждой удовлетворяющей запросу строки. Если не было найдено ни одной строки, то будет возвращен пустой массив.
 
 Чтобы найти все записи в таблице:
 
@@ -310,37 +310,25 @@ Idiorm предоставляет семейство методов, позво�
 Для добавления пунктов ``WHERE ... IN ()`` или ``WHERE ... NOT IN ()``\, используйте методы
 ``where_in`` и ``where_not_in`` соответственно.
 
-Оба метода принимают два аргумента. Первый - название столбца, с которым сравнивать. Второй - *array* возможных значений. Как и во всех методах ``where_``\, вы можете указать множество столбцов, используя ассоциативный *массив* в качестве параметра.
+Оба метода принимают два аргумента. Первый - название столбца, с которым сравнивать. Второй - *массив* возможных значений. Как и во всех методах ``where_``\, вы можете указать множество столбцов, используя ассоциативный *массив* в качестве параметра.
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->where_in('name', array('Fred', 'Joe', 'John'))->find_many();
 
-Working with ``NULL`` values: ``where_null`` and ``where_not_null``
+Работа с ``NULL`` значениями: ``where_null`` и ``where_not_null``
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-To add a ``WHERE column IS NULL`` or ``WHERE column IS NOT NULL``
-clause, use the ``where_null`` and ``where_not_null`` methods
-respectively. Both methods accept a single parameter: the column name to
-test.
+Для добавления пункта ``WHERE column IS NULL`` или ``WHERE column IS NOT NULL``\, используйте методы ``where_null`` и ``where_not_null`` соответственно. Оба метода принимают один параметр: название столбца для сравнения.
 
-Raw WHERE clauses
+Необработанный WHERE
 '''''''''''''''''
 
-If you require a more complex query, you can use the ``where_raw``
-method to specify the SQL fragment for the WHERE clause exactly. This
-method takes two arguments: the string to add to the query, and an
-(optional) array of parameters which will be bound to the string. If
-parameters are supplied, the string should contain question mark
-characters (``?``) to represent the values to be bound, and the
-parameter array should contain the values to be substituted into the
-string in the correct order.
+Если вам необходимо создать более сложный запрос, то можно использовать метод ``where_raw`` для указания нужного SQL-фрагмента для пункта WHERE. Данный метод принимает два аргумента: строку, добавляемую к запросу, и
+(опционально) массив параметров, который будет связан со строкой. Если параметры были переданы, строка должна содержать знаки вопроса (``?``) как плейсхолдеры, для подстановки вместо них значений из массива, а массив должен содержать значения, которые будут подставлены в строку в соответствующем порядке.
 
-This method may be used in a method chain alongside other ``where_*``
-methods as well as methods such as ``offset``, ``limit`` and
-``order_by_*``. The contents of the string you supply will be connected
-with preceding and following WHERE clauses with AND.
+Данный метод можно использовать в цепочке методов вместе с другими методами ``where_*`` а так же с методами вроде ``offset``, ``limit`` и ``order_by_*``. Содержимое переданной строки будет соединено с предыдущими и последующими пунктами WHERE с AND в качестве соединения.
 
 .. code-block:: php
 
@@ -351,26 +339,20 @@ with preceding and following WHERE clauses with AND.
                 ->order_by_asc('name')
                 ->find_many();
 
-    // Creates SQL:
+    // Создаст SQL запрос:
     SELECT * FROM `person` WHERE `name` = "Fred" AND (`age` = 20 OR `age` = 25) ORDER BY `name` ASC;
 
-.. note::
+.. примечание::
 
-    You must wrap your expression in parentheses when using any of ``ALL``,
-    ``ANY``, ``BETWEEN``, ``IN``, ``LIKE``, ``OR`` and ``SOME``. Otherwise
-    the precedence of ``AND`` will bind stronger and in the above example
-    you would effectively get ``WHERE (`name` = "Fred" AND `age` = 20) OR `age` = 25``
+    Необходимо оборачивать выражение в скобки при использовании ``ALL``,
+    ``ANY``, ``BETWEEN``, ``IN``, ``LIKE``, ``OR`` и ``SOME``. В противном случае, приоритет ``AND`` станет сильнее и в примере выше мы получим уже следующее ``WHERE (`name` = "Fred" AND `age` = 20) OR `age` = 25``
 
-Note that this method only supports "question mark placeholder" syntax,
-and NOT "named placeholder" syntax. This is because PDO does not allow
-queries that contain a mixture of placeholder types. Also, you should
-ensure that the number of question mark placeholders in the string
-exactly matches the number of elements in the array.
+Обратите внимание, что этот метод поддерживает только синтакс "плейсхолдера в виде вопроса",
+а НЕ синтакс "именной плейсхолдер". Все потому, что PDO не позволяет создавать запросы, содержащие смешанные типы плейсхолдеров. Так же, необходимо убедиться в том, что число вопросов-плейсхолдеров в строке соответствует числу элементов в массиве.
 
-If you require yet more flexibility, you can manually specify the entire
-query. See *Raw queries* below.
+Если вам нужно ещё больше гибкости, вы можете вручную указать всю строку запроса. Смотрите *Необработанные запросы* ниже.
 
-Limits and offsets
+Limit и offset
 ''''''''''''''''''
 
 *Note that these methods **do not** escape their query parameters and so
@@ -384,7 +366,7 @@ equivalents.
     <?php
     $people = ORM::for_table('person')->where('gender', 'female')->limit(5)->offset(10)->find_many();
 
-Ordering
+Порядок
 ''''''''
 
 *Note that these methods **do not** escape their query parameters and so
@@ -408,7 +390,7 @@ If you want to order by something other than a column name, then use the
     <?php
     $people = ORM::for_table('person')->order_by_expr('SOUNDEX(`name`)')->find_many();
 
-Grouping
+Группировка
 ^^^^^^^^
 
 *Note that this method **does not** escape it query parameter and so
@@ -607,7 +589,7 @@ This will result in the query:
     <?php
     SELECT DISTINCT `name` FROM `person`;
 
-Joins
+Соединения Join
 ^^^^^
 
 Idiorm has a family of methods for adding different types of ``JOIN``\ s
@@ -658,7 +640,7 @@ method to control which columns get returned.
         ->join('person', array('p1.parent', '=', 'p2.id'), 'p2')
         ->find_many();
 
-Raw JOIN clauses
+Необработанные соединения JOIN
 '''''''''''''''''
 
 If you need to construct a more complex query, you can use the ``raw_join``
@@ -718,7 +700,7 @@ The other functions (``AVG``, ``MAX`` and ``SUM``) work in exactly the
 same manner. Supply a column name to perform the aggregate function on
 and it will return an integer.
 
-Raw queries
+Необработанные запросы
 ^^^^^^^^^^^
 
 If you need to perform more complex queries, you can completely specify

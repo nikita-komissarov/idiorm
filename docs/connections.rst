@@ -1,41 +1,34 @@
-Multiple Connections
+Множественные подключения
 ====================
-Idiorm now works with multiple conections. Most of the static functions
-work with an optional connection name as an extra parameter. For the
-``ORM::configure`` method, this means that when passing connection
-strings for a new connection, the second parameter, which is typically
-omitted, should be ``null``. In all cases, if a connection name is not
-provided, it defaults to ``ORM::DEFAULT_CONNECTION``.
+Idiorm теперь работает со множественными подключениями. Большинство статических функций работают с опциональным именем соединения в качестве дополнительного параметра. Касательно метода ``ORM::configure``\, это означает, что при передаче строки соединения для установки нового соединения, второй параметр, который обычно опускается, должен быть равен ``null``. Во всех случаях, если имя соединения не предоставлено, то оно примет значение по-умолчанию ``ORM::DEFAULT_CONNECTION``.
 
-When chaining, once ``for_table()`` has been used in the chain, remaining
-calls in the chain use the correct connection.
+При составлении цепочки, как только метод ``for_table()`` был использован, оставшиеся вызовы в цепочке будут использовать корректное соединение.
 
 .. code-block:: php
 
     <?php
-    // Default connection
+    // Соединение по-умолчанию
     ORM::configure('sqlite:./example.db');
 
-    // A named connection, where 'remote' is an arbitrary key name
+    // Именованное соединение, где 'remote' произвольное имя ключа
     ORM::configure('mysql:host=localhost;dbname=my_database', null, 'remote');
     ORM::configure('username', 'database_user', 'remote');
     ORM::configure('password', 'top_secret', 'remote');
     
-    // Using default connection
+    // Используя соединение по-умолчанию
     $person = ORM::for_table('person')->find_one(5);
     
-    // Using default connection, explicitly
+    // Используя соединение по-умолчанию явным образом
     $person = ORM::for_table('person', ORM::DEFAULT_CONNECTION)->find_one(5);
     
-    // Using named connection
+    // Используя именованное соединение
     $person = ORM::for_table('different_person', 'remote')->find_one(5);
     
     
 
-Supported Methods
+Поддерживаемые методы
 ^^^^^^^^^^^^^^^^^
-In each of these cases, the ``$connection_name`` parameter is optional, and is
-an arbitrary key identifying the named connection.
+В каждом из этих случаев, параметр ``$connection_name`` необязательный, и является произвольным ключем, идентифицирующим название соединения.
 
 * ``ORM::configure($key, $value, $connection_name)``
 * ``ORM::for_table($table_name, $connection_name)``
@@ -45,36 +38,28 @@ an arbitrary key identifying the named connection.
 * ``ORM::get_last_query($connection_name)``
 * ``ORM::get_query_log($connection_name)``
 
-Of these methods, only ``ORM::get_last_query($connection_name)`` does *not*
-fallback to the default connection when no connection name is passed.
-Instead, passing no connection name (or ``null``) returns the most recent
-query on *any* connection.
+Среди этих методов, только ``ORM::get_last_query($connection_name)`` *не* использует соединение по-умолчанию, если не передано название подключения.
+Вместо этого, если не передавать название подключения (или значение ``null``) то метод вернет самый последний запрос *любого* соединения.
 
 .. code-block:: php
 
     <?php
-    // Using default connection, explicitly
+    // Используя соединение по-умолчанию явным образом
     $person = ORM::for_table('person')->find_one(5);
     
-    // Using named connection
+    // Используя именованное подключение
     $person = ORM::for_table('different_person', 'remote')->find_one(5);
 
-    // Last query on *any* connection
-    ORM::get_last_query(); // returns query on 'different_person' using 'remote'
+    // Последний запрос *любого* соединения
+    ORM::get_last_query(); // вернет запрос в 'different_person' используя имя 'remote'
     
-    // returns query on 'person' using default by passing in the connection name
+    // Вернет запрос 'person' используя переданную строку соединения из настроек по-умолчанию
     ORM::get_last_query(ORM::DEFAULT_CONNECTION);
 
-Notes
+Примечания
 ~~~~~
-* **There is no support for joins across connections**
-* Multiple connections do not share configuration settings. This means if
-  one connection has logging set to ``true`` and the other does not, only
-  queries from the logged connection will be available via
-  ``ORM::get_last_query()`` and ``ORM::get_query_log()``.
-* A new method has been added, ``ORM::get_connection_names()``, which returns
-  an array of connection names.
-* Caching *should* work with multiple connections (remember to turn caching
-  on for each connection), but the unit tests are not robust. Please report
-  any errors.
+* **Нет поддержки объединений (join) по подключениям**
+* Множественные подключения не делятся настройками конфигурации. Это означает, что если у  одного соединения параметр логов имеет значение ``true`` а у другого нет, то только запросы из соединения со включенным логом будут доступны для методов ``ORM::get_last_query()`` и ``ORM::get_query_log()``.
+* Был добавлен новый метод, ``ORM::get_connection_names()``, возвращающий массив с именами соединений.
+* Кэширование *должно* работать со множеством соединений (не забудьте включить кеширование для каждого соединения), однако это не надежно в отношении unit-тестирования. Пожалуйста, сообщайте об ошибках.
   

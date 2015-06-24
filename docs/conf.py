@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Idiorm - Русская документация'
-copyright = u'2015, Kirill Saltykov'
+project = u'Idiorm/Ru'
+copyright = u'2015, Kirill "SKV1991" Saltykov'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -184,7 +184,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
   ('index', 'Idiorm.tex', u'Idiorm Documentation',
-   u'Kirill Saltykov', 'manual'),
+   u'Kirill SKV1991 Saltykov', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,8 +213,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'idiormRu', u'Idiorm Documentation',
-     [u'Jamie Matthews and Simon Holywell'], 1)
+    ('index', 'Idiorm/Ru', u'Idiorm Русская документация',
+     [u'Kirill SKV1991 Saltykov'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Idiorm', u'Idiorm Documentation',
-   u'Jamie Matthews and Simon Holywell', 'Idiorm', 'One line description of project.',
+  ('index', 'Idiorm', u'Idiorm Русская документация',
+   u'Kirill SKV1991 Saltykov', 'Idiorm', 'Простая ORM для ваших проектов.',
    'Miscellaneous'),
 ]
 

@@ -140,15 +140,8 @@ PDO доступ к объекту
 
 Если он когда-то потребуется, то объект PDO, используемый в Idiorm может быть получен напрямую через ``ORM::get_db()``, или установлен напрямую через ``ORM::set_db()``. Однако это редкое явление.
 
-*Перевод находится в процессе*
-After a statement has been executed by any means, such as ``::save()``
-or ``::raw_execute()``, the ``PDOStatement`` instance used may be
-accessed via ``ORM::get_last_statement()``. This may be useful in order
-to access ``PDOStatement::errorCode()``, if PDO exceptions are turned
-off, or to access the ``PDOStatement::rowCount()`` method, which returns
-differing results based on the underlying database. For more
-information, see the `PDOStatement documentation`_.
-*Перевод находится в процессе*
+После того, как заявление было выполнено с помощью любых средств, таких, как ``::save()``
+или ``::raw_execute()``, испольуземый экземпляр ``PDOStatement`` может быть получен через ``ORM::get_last_statement()``. Это может быть полезно для доступа к ``PDOStatement::errorCode()``, если исключения в PDO отключены, или для доступа к методу ``PDOStatement::rowCount()``\, который возвращает различные результаты, относительно основной базы данных. Чтобы узнать больше, смотри `PDOStatement документация`_.
 
 Идентификатор символа кавычек
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -200,16 +193,14 @@ Limit clause style
 
 Параметр: ``limit_clause_style``
 
-You can specify the limit clause style in the configuration. This is to facilitate
-a MS SQL style limit clause that uses the ``TOP`` syntax.
+Вы можете установить стиль ограничения в конфигурации. Это делается для облегчения ограничений в стиле MS SQL, использующий синтаксис ``TOP``\.
 
-Acceptable values are ``ORM::LIMIT_STYLE_TOP_N`` and ``ORM::LIMIT_STYLE_LIMIT``.
+Допустимыми значениями являются ``ORM::LIMIT_STYLE_TOP_N`` и ``ORM::LIMIT_STYLE_LIMIT``.
 
-.. note::
+.. примечание::
 
-    If the PDO driver you are using is one of sqlsrv, dblib or mssql then Idiorm
-    will automatically select the ``ORM::LIMIT_STYLE_TOP_N`` for you unless you
-    override the setting.
+    Если драйвер PDO, который вы используете: sqlsrv, dblib или mssql то Idiorm
+    автоматически выберет значение ``ORM::LIMIT_STYLE_TOP_N``\, пока вы его не переопределите.
 
 Лог запросов
 ^^^^^^^^^^^^^
@@ -221,7 +212,7 @@ Idiorm может записывать в лог все вызываемые з�
 
 Когда лог запросов включен, вы можете использовать два статических метода для доступа к логу. ``ORM::get_last_query()`` возвращает самый последний вызванный запрос. ``ORM::get_query_log()`` возвращает массив всех вызванных запросов.
 
-Query logger
+Logger запросов
 ^^^^^^^^^^^^
 
 Параметр: ``logger``
@@ -230,13 +221,9 @@ Query logger
 
     Вы должны включить ``logging`` для использования этого параметра.
 
-It is possible to supply a ``callable`` to this configuration setting, which will
-be executed for every query that idiorm executes. In PHP a ``callable`` is anything
-that can be executed as if it were a function. Most commonly this will take the
-form of a anonymous function.
+Можно передать в этот параметр конфигурации ``callable``\, который будет вызываться для каждого запроса, вызываемого idiorm. В PHP ``callable`` зовется все, что может быть вызвано, как если бы это была функция. Чаще всего это будет представляться в виде анонимной функции.
 
-This setting is useful if you wish to log queries with an external library as it
-allows you too whatever you would like from inside the callback function.
+Это полезный параметр, если вы хотите отслеживать лог запросов с помощью внешней библиотеки, так как он позволяет получить все то, что происходит внутри функций.
 
 .. code-block:: php
 
@@ -245,14 +232,12 @@ allows you too whatever you would like from inside the callback function.
         echo $log_string . ' in ' . $query_time;
     });
 
-Query caching
+Кэширование запросов
 ^^^^^^^^^^^^^
 
-Setting: ``caching``
+Параметр: ``caching``
 
-Idiorm can cache the queries it executes during a request. To enable
-query caching, set the ``caching`` option to ``true`` (it is ``false``
-by default).
+Idiorm может кэшировать выполняемые запросы во время обращения. Для включения кэширования запросов, установите параметру ``caching`` значение ``true`` (по-умолчанию имеет значение ``false``\).
 
 .. code-block:: php
 
@@ -260,46 +245,31 @@ by default).
     ORM::configure('caching', true);
     
     
-Setting: ``caching_auto_clear``
+Параметр: ``caching_auto_clear``
 
-Idiorm's cache is never cleared by default. If you wish to automatically clear it on save, set ``caching_auto_clear`` to ``true``
+По-умолчанию, кэш Idiorm никогда не очищается. Если вы хотите, чтобы он очищался после сохранения, установите параметр ``caching_auto_clear`` на значение ``true``
 
 .. code-block:: php
 
     <?php
     ORM::configure('caching_auto_clear', true);
 
-When query caching is enabled, Idiorm will cache the results of every
-``SELECT`` query it executes. If Idiorm encounters a query that has
-already been run, it will fetch the results directly from its cache and
-not perform a database query.
+Когда включено кэширование запросов, Idiorm будет кэшировать результаты каждой выборки
+``SELECT``\, которая была вызвана. Если Idiorm сталкивается с запросом, который уже был вызван, то он извлечет результаты прямо из кэша и не будет обращаться к базе данных.
 
-Warnings and gotchas
+Предупреждения и подводные камни
 ''''''''''''''''''''
 
--  Note that this is an in-memory cache that only persists data for the
-   duration of a single request. This is *not* a replacement for a
-   persistent cache such as `Memcached`_.
+-  Обратите внимание что для кэширования используется внутренняя память, сохраняющаяя данные в пределах одного запроса. Это *не* замена для существующих систем кэширования вроде `Memcached`_.
 
--  Idiorm’s cache is very simple, and does not attempt to invalidate
-   itself when data changes. This means that if you run a query to
-   retrieve some data, modify and save it, and then run the same query
-   again, the results will be stale (ie, they will not reflect your
-   modifications). This could potentially cause subtle bugs in your
-   application. If you have caching enabled and you are experiencing odd
-   behaviour, disable it and try again. If you do need to perform such
-   operations but still wish to use the cache, you can call the
-   ``ORM::clear_cache()`` to clear all existing cached queries.
+-  Кэш Idiorm построен очень просто, и не пытается стать недействительным, если данные изменились. Это означает, если вы выполните запрос для извлечения каких-то данных, измените их и сохраните, а далее вызовите такой же запрос снова, то результаты будут устаревшими (т.е., они не будут отражать изменений). Это может привести к потенциальным трудоуловимым ошибкам в вашем приложении. Если у вас включено кэширование и вы заметили странное поведение, отключите его и попробуйте снова. Если вам все-таки нужно выполнять такие операции, но вы хотите оставь кэш включенным, то можно вызвать метод ``ORM::clear_cache()`` для очистки всех кэшированных запросов.
 
--  Enabling the cache will increase the memory usage of your
-   application, as all database rows that are fetched during each
-   request are held in memory. If you are working with large quantities
-   of data, you may wish to disable the cache.
+-  Включение кэширования увеличивает расход памяти для приложения, так как все строки базы данных, полученные по время каждого запроса будут храниться в памяти. Если вы работаете с большими объемами данных, то лучше будет отключить кэш.
 
-Custom caching
+Произвольное кэширование
 ''''''''''''''
 
-If you wish to use custom caching functions, you can set them from the configure options. 
+Если вы хотите использовать произвольные функции кэширования, вы можете задать их в параметрах конфигурации. 
 
 .. code-block:: php
 
@@ -328,8 +298,7 @@ If you wish to use custom caching functions, you can set them from the configure
 
 
 .. _документацию PDO: http://php.net/manual/ru/pdo.construct.php
-.. _the PDO documentation: http://php.net/manual/en/pdo.construct.php
 .. _документация PDO - присвоение атрибута: http://php.net/manual/ru/pdo.setattribute.php
-.. _PDOStatement documentation: http://php.net/manual/en/class.pdostatement.php
+.. _PDOStatement документация: http://php.net/manual/en/class.pdostatement.php
 .. _Memcached: http://www.memcached.org/
 .. _составной первичный ключ: https://ru.wikipedia.org/wiki/%D0%9F%D0%B5%D1%80%D0%B2%D0%B8%D1%87%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BB%D1%8E%D1%87#.D0.9F.D1.80.D0.BE.D1.81.D1.82.D1.8B.D0.B5_.D0.B8_.D1.81.D0.BE.D1.81.D1.82.D0.B0.D0.B2.D0.BD.D1.8B.D0.B5_.D0.BA.D0.BB.D1.8E.D1.87.D0.B8

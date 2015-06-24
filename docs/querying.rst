@@ -196,17 +196,13 @@ Idiorm предоставляет семейство методов, позво�
 Равенство: ``where``, ``where_equal``, ``where_not_equal``
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-По-умолчанию, вызывая ``where`` с двумя параметрами (название столбца и значение) соединит их, используя оператор равенства (``=``). Например, вызов ``where('name', 'Fred')`` вернет следующее: ``WHERE name = "Fred"``.
+По-умолчанию, вызывая ``where`` с двумя параметрами (название столбца и значение), они будут соединены, используя оператор равенства (``=``). Например, вызов ``where('name', 'Fred')`` вернет следующее: ``WHERE name = "Fred"``.
 
-If your coding style favours clarity over brevity, you may prefer to use
-the ``where_equal`` method: this is identical to ``where``.
+Если ваш стиль написания кода направлен на ясность написанного, а не на краткость, то можно использовать метод ``where_equal`` идентичный методу ``where``.
 
-The ``where_not_equal`` method adds a ``WHERE column != "value"`` clause
-to your query.
+Метод ``where_not_equal`` добавляет пункт ``WHERE column != "value"`` к вашему запросу.
 
-You can specify multiple columns and their values in the same call. In this
-case you should pass an associative array as the first parameter. The array
-notation uses keys as column names.
+Можно указать множество столбцов и их значений в пределах одного вызова. В этом случае, вам нужно передать ассоциативный массив в качестве первого параметра. В нотации массива, ключи используются как названия стобцов.
 
 .. code-block:: php
 
@@ -218,60 +214,55 @@ notation uses keys as column names.
                 ))
                 ->find_many();
 
-    // Creates SQL:
+    // Создаст следующий запрос SQL:
     SELECT * FROM `person` WHERE `name` = "Fred" AND `age` = "20";
 
-Shortcut: ``where_id_is``
+Короткая запись: ``where_id_is``
 '''''''''''''''''''''''''
 
-This is a simple helper method to query the table by primary key.
-Respects the ID column specified in the config. If you are using a compound
-primary key, you must pass an array where the key is the column name. Columns
-that don't belong to the key will be ignored.
+Это простой вспомогательный метод, для составления запроса по первичному ключу таблицы.
+Смотрит относительно ID столбца, указанного в конфигурации. Если вы используете составной первичный ключ, то нужно передать массив, где ключом является название столбца. Столбцы, не принадлежащие к этому ключу будут игнорироваться.
 
-Shortcut: ``where_id_in``
+Короткая запись: ``where_id_in``
 '''''''''''''''''''''''''
 
-This helper method is similar to ``where_id_is`, but it expects an array of
-primary keys to be selected. It is compound primary keys aware.
+Этот вспомагательный метод аналогичен ``where_id_is`, но он ожидает массив первичных ключей для выборки. Так же понимает и составной первичный ключ.
 
-Less than / greater than: ``where_lt``, ``where_gt``, ``where_lte``, ``where_gte``
+Меньше чем / больше чем: ``where_lt``, ``where_gt``, ``where_lte``, ``where_gte``
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-There are four methods available for inequalities:
+Есть четыре метода, доступные для неравенств:
 
--  Less than:
+-  Меньше чем (less than):
    ``$people = ORM::for_table('person')->where_lt('age', 10)->find_many();``
--  Greater than:
+-  Больше чем (greater than):
    ``$people = ORM::for_table('person')->where_gt('age', 5)->find_many();``
--  Less than or equal:
+-  Меньше или равен (less than or equal):
    ``$people = ORM::for_table('person')->where_lte('age', 10)->find_many();``
--  Greater than or equal:
+-  Больше или равен (greater than or equal_:
    ``$people = ORM::for_table('person')->where_gte('age', 5)->find_many();``
 
-String comparision: ``where_like`` and ``where_not_like``
+Сравнение строк: ``where_like`` и ``where_not_like``
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-To add a ``WHERE ... LIKE`` clause, use:
+Для добавления пункта ``WHERE ... LIKE``, используйте:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->where_like('name', '%fred%')->find_many();
 
-Similarly, to add a ``WHERE ... NOT LIKE`` clause, use:
+Аналогично и для ``WHERE ... NOT LIKE``, используйте:
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->where_not_like('name', '%bob%')->find_many();
 
-Multiple OR'ed conditions
+Множественные условия OR
 '''''''''''''''''''''''''
 
-You can add simple OR'ed conditions to the same WHERE clause using ``where_any_is``. You
-should specify multiple conditions using an array of items. Each item will be an
-associative array that contains a multiple conditions. 
+Можно добавить простое условие OR в тот же пункт WHERE используя ``where_any_is``. Если вам нужно указать множество условий, используйте массив элементов. Каждый элемент будет ассоциативным массивом, содержащим множество условий.
 
 .. code-block:: php
 
@@ -282,11 +273,10 @@ associative array that contains a multiple conditions.
                     array('name' => 'Fred', 'age' => 20)))
                 ->find_many();
 
-    // Creates SQL:
+    // Создаст SQL запрос:
     SELECT * FROM `widget` WHERE (( `name` = 'Joe' AND `age` = '10' ) OR ( `name` = 'Fred' AND `age` = '20' ));
 
-By default, it uses the equal operator for every column, but it can be overriden for any
-column using a second parameter:
+По-умолчанию, оператор равенства используется для каждого столбца, но его можно переопределить для любого столбца, используя второй параметр:
 
 .. code-block:: php
 
@@ -297,10 +287,10 @@ column using a second parameter:
                     array('name' => 'Fred', 'age' => 20)), array('age' => '>'))
                 ->find_many();
 
-    // Creates SQL:
+    // Создаст SQL запрос:
     SELECT * FROM `widget` WHERE (( `name` = 'Joe' AND `age` > '10' ) OR ( `name` = 'Fred' AND `age` > '20' ));
 
-If you want to set the default operator for all the columns, just pass it as the second parameter:
+Если вы хотите задать свой оператор по-умолчанию для всех столбцов, то нужно передать его как второй параметр:
 
 .. code-block:: php
 
@@ -311,14 +301,14 @@ If you want to set the default operator for all the columns, just pass it as the
                     array('score' => '15', 'age' => 20)), '>')
                 ->find_many();
 
-    // Creates SQL:
+    // Создаст SQL запрос:
     SELECT * FROM `widget` WHERE (( `score` > '5' AND `age` > '10' ) OR ( `score` > '15' AND `age` > '20' ));
 
-Set membership: ``where_in`` and ``where_not_in``
+Set membership: ``where_in`` и ``where_not_in``
 '''''''''''''''''''''''''''''''''''''''''''''''''
 
-To add a ``WHERE ... IN ()`` or ``WHERE ... NOT IN ()`` clause, use the
-``where_in`` and ``where_not_in`` methods respectively.
+Для добавления пунктов ``WHERE ... IN ()`` или ``WHERE ... NOT IN ()``, используйте методы
+``where_in`` и ``where_not_in`` соответственно.
 
 Both methods accept two arguments. The first is the column name to
 compare against. The second is an *array* of possible values. As all the

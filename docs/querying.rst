@@ -560,7 +560,7 @@ DISTINCT
     <?php
     $distinct_names = ORM::for_table('person')->distinct()->select('name')->find_many();
 
-This will result in the query:
+В результате сформирует запрос:
 
 .. code-block:: php
 
@@ -570,43 +570,31 @@ This will result in the query:
 Соединения Join
 ^^^^^
 
-Idiorm has a family of methods for adding different types of ``JOIN``\ s
-to the queries it constructs:
+Idiorm содержит семейство методов для добавления различных типов ``JOIN``\ (объединение) при построении запросов:
 
-Methods: ``join``, ``inner_join``, ``left_outer_join``,
+Методы: ``join``, ``inner_join``, ``left_outer_join``,
 ``right_outer_join``, ``full_outer_join``.
 
-Each of these methods takes the same set of arguments. The following
-description will use the basic ``join`` method as an example, but the
-same applies to each method.
+Каждый из этих методов принимает одинковый набор аргументов. В описании будет использоваться базовый метод ``join`` в качестве примера, но то же самое применимо и к остальным методам.
 
-The first two arguments are mandatory. The first is the name of the
-table to join, and the second supplies the conditions for the join. The
-recommended way to specify the conditions is as an *array* containing
-three components: the first column, the operator, and the second column.
-The table and column names will be automatically quoted. For example:
+Первые два аргумента являются обязательными. Первым идет имя таблицы для соединения, вторым условия для объединения. Рекумендуемым способом указания этих аргументов является *массив* содержащий три компонента: первый столбец, оператор, второй столбец.
+Название столбца и таблицы автоматический заключается в кавычки. Пример:
 
 .. code-block:: php
 
     <?php
     $results = ORM::for_table('person')->join('person_profile', array('person.id', '=', 'person_profile.person_id'))->find_many();
 
-It is also possible to specify the condition as a string, which will be
-inserted as-is into the query. However, in this case the column names
-will **not** be escaped, and so this method should be used with caution.
+Так же возможно указать условие в виде строки, которая будет добавлена в запрос как есть. Однако, в этом случае имена столбцов **не** будет экранированы, так что этот метод нужно использовать с осторожностью.
 
 .. code-block:: php
 
     <?php
-    // Not recommended because the join condition will not be escaped.
+    // Не рекомендуется, потому что условие объединения не экранируется.
     $results = ORM::for_table('person')->join('person_profile', 'person.id = person_profile.person_id')->find_many();
 
-The ``join`` methods also take an optional third parameter, which is an
-``alias`` for the table in the query. This is useful if you wish to join
-the table to *itself* to create a hierarchical structure. In this case,
-it is best combined with the ``table_alias`` method, which will add an
-alias to the *main* table associated with the ORM, and the ``select``
-method to control which columns get returned.
+Методы ``join`` так же принимают необязательный третий параметр, который служит как ``alias`` для таблицы в запросе. Это полезно, если нужно соединить таблицу с *собой* для создания иерархической структуры. В этом случае,
+лучше всего скомбинировать с методом ``table_alias``\, который добавит алиас к *основной* таблице, связанной с ORM, и методом ``select`` для управления возвращаемыми столбцами.
 
 .. code-block:: php
 
@@ -621,20 +609,11 @@ method to control which columns get returned.
 Необработанные соединения JOIN
 '''''''''''''''''
 
-If you need to construct a more complex query, you can use the ``raw_join``
-method to specify the SQL fragment for the JOIN clause exactly. This
-method takes four required arguments: the string to add to the query,
-the conditions is as an *array* containing three components: 
-the first column, the operator, and the second column, the table alias and
-(optional) the parameters array. If parameters are supplied, 
-the string should contain question mark characters (``?``) to represent 
-the values to be bound, and the parameter array should contain the values 
-to be substituted into the string in the correct order.
+Если вам нужно построить более сложный запрос, то можно использовать метод ``raw_join`` для указания SQL-фрагмента для пункта JOIN. Этот метод принимает четыре обязательных аргумента: строку, добавляемую к запросу, условия в виде *массива*, содержащего три компонента: 
+первый столбец, оператор, второй столбец, алиас таблицы и
+(необязательно) массив параметров. Если параметры переданы, строка должна содержать знаки вопроса (``?``) для представления подставляемых значений, и массив параметров должен создержать значения для подстановки в строку в корректной последовательности.
 
-This method may be used in a method chain alongside other ``*_join``
-methods as well as methods such as ``offset``, ``limit`` and
-``order_by_*``. The contents of the string you supply will be connected
-with preceding and following JOIN clauses.
+Этот метод может использоваться в цепочке наравне с другими методами ``*_join`` так же, как и методы вроде ``offset``, ``limit`` и ``order_by_*``. Содержимое переданной строки будет соединено с предшествующими и последующими пунктами JOIN.
 
 .. code-block:: php
 
@@ -648,35 +627,28 @@ with preceding and following JOIN clauses.
                 ->order_by_asc('person.name')
                 ->find_many();
 
-    // Creates SQL:
+    // Создаст SQL запрос:
     SELECT * FROM `person` JOIN (SELECT * FROM role WHERE role.name = 'janitor') `role` ON `person`.`role_id` = `role`.`id` ORDER BY `person`.`name` ASC
 
-Note that this method only supports "question mark placeholder" syntax,
-and NOT "named placeholder" syntax. This is because PDO does not allow
-queries that contain a mixture of placeholder types. Also, you should
-ensure that the number of question mark placeholders in the string
-exactly matches the number of elements in the array.
+Обратите внимание, этот метод поддерживает только синтаксис "плейсхолдеров в виде знака вопроса",
+а не синтаксис "именованных плейсхоледров". Потмоу что PDO не позволяет создавать запросы с различным типом плейсхоледров. Так же нужно убедиться, что число знаков вопроса в строке совпадает с числом передаваемых значений в массиве.
 
-If you require yet more flexibility, you can manually specify the entire
-query. See *Raw queries* below.
+Если вам нужно ещё больше гибкости, вы можете вручную написать весь запрос. Смотрите *Необработанные запросы* ниже.
 
 
-Aggregate functions
+Агрегатные функции
 ^^^^^^^^^^^^^^^^^^^
 
-There is support for ``MIN``, ``AVG``, ``MAX`` and ``SUM`` in addition
-to ``COUNT`` (documented earlier).
+Существует поддержка ``MIN``, ``AVG``, ``MAX`` и ``SUM`` в дополнение к ``COUNT`` (описанно ранее).
 
-To return a minimum value of column, call the ``min()`` method.
+Для получения минимального значения столбца, вызовите метод ``min()``\.
 
 .. code-block:: php
 
     <?php
     $min = ORM::for_table('person')->min('height');
 
-The other functions (``AVG``, ``MAX`` and ``SUM``) work in exactly the
-same manner. Supply a column name to perform the aggregate function on
-and it will return an integer.
+Остальные функции (``AVG``, ``MAX`` and ``SUM``) работают таким же способом. Укажите название столбца для выполнения агрегатных функций, и в результате получите значение integer.
 
 Необработанные запросы
 ^^^^^^^^^^^

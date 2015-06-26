@@ -653,27 +653,14 @@ Idiorm содержит семейство методов для добавле�
 Необработанные запросы
 ^^^^^^^^^^^
 
-If you need to perform more complex queries, you can completely specify
-the query to execute by using the ``raw_query`` method. This method
-takes a string and optionally an array of parameters. The string can
-contain placeholders, either in question mark or named placeholder
-syntax, which will be used to bind the parameters to the query.
+Если вам нужно выполнять более сложные запросы, то можно полностью указать текст запроса, используя метод ``raw_query``\. Данный метод принимает строку и необязательный массив параметров. Строка может содержать плейсхолдеры, либо в виде знака вопроса, либо именованный плейсхолдер, который будет использоваться для внедрения параметров в запрос.
 
 .. code-block:: php
 
     <?php
     $people = ORM::for_table('person')->raw_query('SELECT p.* FROM person p JOIN role r ON p.role_id = r.id WHERE r.name = :role', array('role' => 'janitor'))->find_many();
 
-The ORM class instance(s) returned will contain data for all the columns
-returned by the query. Note that you still must call ``for_table`` to
-bind the instances to a particular table, even though there is nothing
-to stop you from specifying a completely different table in the query.
-This is because if you wish to later called ``save``, the ORM will need
-to know which table to update.
+Возвращаемый экземпляр(ы) класса ORM будет содержать данные для всех столбцов, возвращаемых запросом. Обратите внимание, что все так же нужно вызывать метод ``for_table`` для связки экземпляра с нужной таблицей, даже если нет ограничений на установку другой таблицы в запросе.
+Это сделано для того, чтобы при желании выполнить метод ``save``, ORM знал какую таблицу обновлять.
 
-Note that using ``raw_query`` is advanced and possibly dangerous, and
-Idiorm does not make any attempt to protect you from making errors when
-using this method. If you find yourself calling ``raw_query`` often, you
-may have misunderstood the purpose of using an ORM, or your application
-may be too complex for Idiorm. Consider using a more full-featured
-database abstraction system.
+Нужно так же иметь в виду, что использование ``raw_query`` требует дополнительных навыков и может быть опасным, и Idiorm не будет пытаться защитить вас от ошибок, которые могут появиться при использовании этого метода. Если вы заметите у себя частое используете ``raw_query``\, то возможно вы неправильно поняли цель использования ORM, или ваше приложение может быть слишком сложным, для использоваия Idiorm. Рассмотрите возможность использования более полнофункциональной системы абстракции базы данных.

@@ -419,7 +419,7 @@ Having
     <?php
     $people = ORM::for_table('person')->group_by('name')->having_not_like('name', '%bob%')->find_many();
 
-Result columns
+Столбцы в результате
 ^^^^^^^^^^^^^^
 
 По-умолчанию, все столбцы в выражении ``SELECT`` будут возвращены после запроса. То есть, вызывая:

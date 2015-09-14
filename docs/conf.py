@@ -103,7 +103,7 @@ html_theme = 'default'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "Idiorm - Русская документация"
+html_title = u'Idiorm - Русская документация'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 html_short_title = "Idiorm-Ru"
@@ -228,7 +228,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'Idiorm', u'Idiorm Русская документация',
-   u'Kirill SKV1991 Saltykov', 'Idiorm', 'Простая ORM для ваших проектов.',
+   u'Kirill SKV1991 Saltykov', 'Idiorm', u'Простая ORM для ваших проектов.',
    'Miscellaneous'),
 ]
 
